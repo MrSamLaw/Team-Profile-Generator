@@ -1,0 +1,29 @@
+{
+  "name": "team-profile-generator",
+  "version": "1.0.0",
+  "description": "Generates a directory of employees",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MrSamLaw/Team-Profile-Generator.git"
+  },
+  "author": "MrSamLaw",
+  "license": "MIT",
+  "dependencies": {
+    "inquirer": "^6.2.1"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
+  },
+  "bugs": {
+    "url": "https://github.com/MrSamLaw/Team-Profile-Generator/issues"
+  },
+  "homepage": "https://github.com/MrSamLaw/Team-Profile-Generator#readme"
+}
