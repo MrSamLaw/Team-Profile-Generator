@@ -32,10 +32,115 @@ const teamManager = [
     },
 ]
 
-init();
+const roleEngineer = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'Please enter engineer\'s name:',
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: 'Please enter engineer\'s employee ID:',
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'Please enter engineer\'s email address:',
+    },
+    {
+        type: 'input',
+        name: 'github',
+        message: 'Please enter engineer\'s GitHub profile name:',
+    },
+]
+
+const roleIntern = [
+    {
+        type: 'input',
+        name: 'name',
+        message: 'Please enter intern\'s name:',
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: 'Please enter intern\'s employee ID:',
+    },
+    {
+        type: 'input',
+        name: 'email',
+        message: 'Please enter intern\'s email address:',
+    },
+    {
+        type: 'input',
+        name: 'school',
+        message: 'Please enter intern\'s school name:',
+    },
+]
+
+const teamChoice = [
+    {
+        type: 'list',
+        name: 'role',
+        message: 'What is the role of the next employee?',
+        choices: [
+            'Engineer',
+            'Intern',
+            'Team is complete, no more additions.',
+        ],
+    },
+]
+
+function chooseTeam() {
+
+    //Choose Intern or Engineer
+    inquirer.prompt(teamChoice).then((dataChoice) => {
+        console.log(dataChoice.role);
+        switch (dataChoice.role) {
+            case 'Engineer':
+                inquirer.prompt(roleEngineer).then((dataEngineer) => {
+                    let newEngineer = new Engineer(
+                        dataEngineer.name,
+                        dataEngineer.id,
+                        dataEngineer.email,
+                        dataEngineer.github
+                    );
+                    teamMembers.push(newEngineer);
+                    chooseTeam();
+                })
+                    .catch((err) => {
+                        console.log("Team could not be created.  Please try again.");
+                        console.error(err);
+                    });
+                break;
+            case 'Intern':
+                inquirer.prompt(roleIntern).then((dataIntern) => {
+                    let newIntern = new Intern(
+                        dataIntern.name,
+                        dataIntern.id,
+                        dataIntern.email,
+                        dataIntern.github
+                    );
+                    teamMembers.push(newIntern);
+                    chooseTeam();
+                })
+                    .catch((err) => {
+                        console.log("Team could not be created.  Please try again.");
+                        console.error(err);
+                    });
+                break;
+            case 'Team is complete, no more additions.':
+                break;
+        }
+    })
+        .catch((err) => {
+            console.log("Team could not be created.  Please try again.");
+            console.error(err);
+        });
+}
 
 function init() {
-    // Manager inputs
+    // Initialization routing - Generate 1 Manager, then present choice of Engineer, Intern or finish team.
     inquirer.prompt(teamManager).then((dataManager) => {
         let newManager = new Manager(
             dataManager.name,
@@ -45,10 +150,12 @@ function init() {
         );
         teamMembers.push(newManager);
         console.log(`Building Manager ${dataManager.name}'s team.`);
-        console.log(teamMembers);
-    });
-
-    //Choose Intern or Engineer
-
+        chooseTeam();
+    })
+        .catch((err) => {
+            console.log("Team could not be created.  Please try again.");
+            console.error(err);
+        });
 }
 
+init();
