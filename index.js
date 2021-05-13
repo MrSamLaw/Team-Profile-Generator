@@ -1,12 +1,14 @@
 // NPM Packages
 const inquirer = require('inquirer');
 const fs = require('fs');
+const path = require('path');
 
 //Class calls
 const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
+const outputPath = path.join(__dirname, "dist/team.html");
 var teamMembers = [];
 
 const teamManager = [
@@ -130,6 +132,10 @@ function chooseTeam() {
                     });
                 break;
             case 'Team is complete, no more additions.':
+                let outputData = render(teamMembers);
+                fs.writeFile(outputPath, outputData, (err) => {
+                    err ? console.log(err) : console.log(`Team Profile has been generated to ${ouputPath}`)
+                });
                 break;
         }
     })
