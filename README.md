@@ -6,7 +6,7 @@ Our clients requested a simple way to build a webpage listing simple information
 
 [Walkthrough Video](https://drive.google.com/file/d/1cQRbyAcQpU_t5M4_aa0lSpqrJDiRlhxR/view?usp=sharing)
 
-[Sample Output](develop/output/README.md)
+[Sample Output](dist/team.html)
 
 ![Sample Output Screenshot](assets/SampleOutput.png)
 
