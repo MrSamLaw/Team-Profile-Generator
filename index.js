@@ -8,6 +8,7 @@ const Manager = require('./lib/Manager');
 const Engineer = require('./lib/Engineer');
 const Intern = require('./lib/Intern');
 
+// const render = require('./lib/htmlRender')
 const outputPath = path.join(__dirname, "dist/team.html");
 var teamMembers = [];
 
@@ -132,7 +133,9 @@ function chooseTeam() {
                     });
                 break;
             case 'Team is complete, no more additions.':
-                let outputData = render(teamMembers);
+                let outputData = generateHTML(teamMembers);
+                console.log(outputPath);
+                console.log(outputData);
                 fs.writeFile(outputPath, outputData, (err) => {
                     err ? console.log(err) : console.log(`Team Profile has been generated to ${ouputPath}`)
                 });
@@ -165,3 +168,10 @@ function init() {
 }
 
 init();
+
+
+const generateHTML = data => {
+    `
+    
+    `;
+}
