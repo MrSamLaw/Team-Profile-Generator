@@ -30,7 +30,7 @@ const teamManager = [
     },
     {
         type: 'input',
-        name: 'officeNo',
+        name: 'officeNumber',
         message: 'Please enter manager\'s office number:',
     },
 ]
@@ -122,7 +122,7 @@ function chooseTeam() {
                         dataIntern.name,
                         dataIntern.id,
                         dataIntern.email,
-                        dataIntern.github
+                        dataIntern.school
                     );
                     teamMembers.push(newIntern);
                     chooseTeam();
@@ -133,11 +133,12 @@ function chooseTeam() {
                     });
                 break;
             case 'Team is complete, no more additions.':
+                console.log(teamMembers);
+                console.log(typeof (teamMembers));
                 let outputData = generateHTML(teamMembers);
-                console.log(outputPath);
                 console.log(outputData);
-                fs.writeFile(outputPath, outputData, (err) => {
-                    err ? console.log(err) : console.log(`Team Profile has been generated to ${ouputPath}`)
+                fs.writeFile(outputPath, generateHTML(teamMembers), (err) => {
+                    err ? console.log(err) : console.log(`Team Profile has been generated to ${outputPath}`)
                 });
                 break;
         }
@@ -170,8 +171,120 @@ function init() {
 init();
 
 
-const generateHTML = data => {
-    `
-    
+const generateHTML = (data) => {
+    let noEngineers = 0;
+    let noInterns = 0;
+    for (employee of data) {
+        console.log(employee.getRole());
+        if (employee.getRole() == "Engineer") {
+            console.log("here");
+            noEngineers++;
+        } else if (employee.getRole() == "Intern") {
+            noInterns++;
+        }
+    }
+    return `
+    <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
+</head>
+<style>
+    .card-columns {
+        column-count: 3;
+    }
+
+    .fas {
+        margin-right: 0.5em;
+    }
+</style>
+
+<body>
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4 text-center">${data[0].name}'s Team</h1>
+            <p class="lead text-center">A team of ${noEngineers} Engineers & ${noInterns} Interns</p>
+        </div>
+    </div>
+    <section class="container">
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 justify-content-center">
+            ${employeeCards(data)}
+        </div>
+    </section>
+    </body>
+<script src="https://kit.fontawesome.com/5ab0108a51.js" crossorigin="anonymous"></script>
+
+</html>
     `;
+}
+function employeeCards(teamMembers) {
+    let employeeCardsHTML = "";
+    for (employee of teamMembers) {
+        switch (employee.getRole()) {
+            case 'Manager':
+                employeeCardsHTML += `
+                <div class="col mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h4>${employee.name}</h4>
+                            <h5><i class="fas fa-mug-hot"></i>${employee.getRole()}</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">ID: ${employee.id}</li>
+                                <li class="list-group-item">Email: <a href="mailto:${employee.email}">${employee.email}</a></li>
+                                <li class="list-group-item">Office No: ${employee.officeNumber}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                `
+                break;
+            case 'Engineer':
+                employeeCardsHTML += `
+                <div class="col mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h4>${employee.name}</h4>
+                            <h5><i class="fas fa-mug-hot"></i>${employee.getRole()}</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">ID: ${employee.id}</li>
+                                <li class="list-group-item">Email: <a href="mailto:${employee.email}">${employee.email}</a></li>
+                                <li class="list-group-item">GitHub: <a href="https://www.github.com/${employee.gitHub}">${employee.gitHub}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                `
+                break;
+            case 'Intern':
+                employeeCardsHTML += `
+                <div class="col mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h4>${employee.name}</h4>
+                            <h5><i class="fas fa-mug-hot"></i>${employee.getRole()}</h5>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">ID: ${employee.id}</li>
+                                <li class="list-group-item">Email: <a href="mailto:${employee.email}">${employee.email}</a></li>
+                                <li class="list-group-item">School: ${employee.school}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                `
+                break;
+        }
+    }
+    return employeeCardsHTML;
 }
