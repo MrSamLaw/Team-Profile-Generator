@@ -98,9 +98,9 @@ function chooseTeam() {
 
     //Choose Intern or Engineer
     inquirer.prompt(teamChoice).then((dataChoice) => {
-        console.log(dataChoice.role);
         switch (dataChoice.role) {
             case 'Engineer':
+                console.log(`You are adding a ${dataChoice.role}`);
                 inquirer.prompt(roleEngineer).then((dataEngineer) => {
                     let newEngineer = new Engineer(
                         dataEngineer.name,
@@ -117,6 +117,7 @@ function chooseTeam() {
                     });
                 break;
             case 'Intern':
+                console.log(`You are adding a ${dataChoice.role}`);
                 inquirer.prompt(roleIntern).then((dataIntern) => {
                     let newIntern = new Intern(
                         dataIntern.name,
@@ -133,10 +134,7 @@ function chooseTeam() {
                     });
                 break;
             case 'Team is complete, no more additions.':
-                console.log(teamMembers);
-                console.log(typeof (teamMembers));
                 let outputData = generateHTML(teamMembers);
-                console.log(outputData);
                 fs.writeFile(outputPath, generateHTML(teamMembers), (err) => {
                     err ? console.log(err) : console.log(`Team Profile has been generated to ${outputPath}`)
                 });
@@ -175,9 +173,7 @@ const generateHTML = (data) => {
     let noEngineers = 0;
     let noInterns = 0;
     for (employee of data) {
-        console.log(employee.getRole());
         if (employee.getRole() == "Engineer") {
-            console.log("here");
             noEngineers++;
         } else if (employee.getRole() == "Intern") {
             noInterns++;
@@ -252,13 +248,13 @@ function employeeCards(teamMembers) {
                     <div class="card h-100">
                         <div class="card-header">
                             <h4>${employee.name}</h4>
-                            <h5><i class="fas fa-mug-hot"></i>${employee.getRole()}</h5>
+                            <h5><i class="fas fa-glasses"></i>${employee.getRole()}</h5>
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">ID: ${employee.id}</li>
                                 <li class="list-group-item">Email: <a href="mailto:${employee.email}">${employee.email}</a></li>
-                                <li class="list-group-item">GitHub: <a href="https://www.github.com/${employee.gitHub}">${employee.gitHub}</a></li>
+                                <li class="list-group-item">GitHub: <a href="https://www.github.com/${employee.getGithub()}">${employee.getGithub()}</a></li>
                             </ul>
                         </div>
                     </div>
@@ -271,7 +267,7 @@ function employeeCards(teamMembers) {
                     <div class="card h-100">
                         <div class="card-header">
                             <h4>${employee.name}</h4>
-                            <h5><i class="fas fa-mug-hot"></i>${employee.getRole()}</h5>
+                            <h5><i class="fas fa-user-graduate"></i>${employee.getRole()}</h5>
                         </div>
                         <div class="card-body">
                             <ul class="list-group list-group-flush">
